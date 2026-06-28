@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/api_service.dart';
+import '../theme/app_color.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -71,30 +72,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     ).showSnackBar(SnackBar(content: Text(message)));
   }
 
-  InputDecoration inputDecoration(
-    String label,
-    IconData icon, {
-    Widget? suffixIcon,
-  }) {
-    return InputDecoration(
-      labelText: label,
-      prefixIcon: Icon(icon),
-      suffixIcon: suffixIcon,
-      filled: true,
-      fillColor: Colors.white,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: Color(0xFFE0E0E0)),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: Color(0xFF2D1BFF), width: 1.6),
-      ),
-    );
-  }
-
   @override
   void dispose() {
     nameController.dispose();
@@ -106,31 +83,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFBF9FF),
-
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text(
           'Create Account',
           style: TextStyle(
             fontWeight: FontWeight.w600,
-            color: Color(0xFF1F1F2E),
+            color: AppColors.textDark,
           ),
         ),
-        centerTitle: true,
-        backgroundColor: const Color(0xFFFBF9FF),
-        elevation: 0,
-        surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios_new_rounded,
-            color: Color(0xFF1F1F2E),
+            color: AppColors.textDark,
           ),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
       ),
-
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
@@ -138,10 +109,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
             children: [
               const SizedBox(height: 30),
 
-              const Icon(
-                Icons.person_add_alt_1_rounded,
-                size: 90,
-                color: Color(0xFF2D1BFF),
+              const CircleAvatar(
+                radius: 50,
+                backgroundColor: AppColors.softPink,
+                child: Icon(
+                  Icons.person_add_alt_1_rounded,
+                  size: 58,
+                  color: AppColors.primary,
+                ),
               ),
 
               const SizedBox(height: 18),
@@ -151,7 +126,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 style: TextStyle(
                   fontSize: 26,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF1F1F2E),
+                  color: AppColors.textDark,
                 ),
               ),
 
@@ -160,23 +135,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
               const Text(
                 'Register to access the student portal',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 15, color: Colors.grey),
+                style: TextStyle(fontSize: 15, color: AppColors.textGrey),
               ),
 
               const SizedBox(height: 35),
 
               TextField(
                 controller: nameController,
-                decoration: inputDecoration('Full Name', Icons.badge_outlined),
+                decoration: const InputDecoration(
+                  labelText: 'Full Name',
+                  prefixIcon: Icon(Icons.badge_outlined),
+                ),
               ),
 
               const SizedBox(height: 16),
 
               TextField(
                 controller: userController,
-                decoration: inputDecoration(
-                  'Portal Username',
-                  Icons.person_outline_rounded,
+                decoration: const InputDecoration(
+                  labelText: 'Portal Username',
+                  prefixIcon: Icon(Icons.person_outline_rounded),
                 ),
               ),
 
@@ -185,9 +163,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
               TextField(
                 controller: passwordController,
                 obscureText: obscurePassword,
-                decoration: inputDecoration(
-                  'Portal Password',
-                  Icons.lock_outline_rounded,
+                decoration: InputDecoration(
+                  labelText: 'Portal Password',
+                  prefixIcon: const Icon(Icons.lock_outline_rounded),
                   suffixIcon: IconButton(
                     icon: Icon(
                       obscurePassword
@@ -210,14 +188,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 height: 55,
                 child: ElevatedButton(
                   onPressed: isLoading ? null : register,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF2D1BFF),
-                    foregroundColor: Colors.white,
-                    elevation: 2,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
                   child: isLoading
                       ? const SizedBox(
                           width: 22,
@@ -227,13 +197,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             strokeWidth: 2.5,
                           ),
                         )
-                      : const Text(
-                          'Register',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                      : const Text('Register'),
                 ),
               ),
             ],

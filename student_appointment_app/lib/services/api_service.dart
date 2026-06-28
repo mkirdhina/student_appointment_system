@@ -131,7 +131,6 @@ class ApiService {
   static Future<Map<String, dynamic>> adminUpdateAppointment(
     int adminUserId,
     int appointmentId,
-    String purpose,
     String status,
   ) async {
     final response = await http.post(
@@ -140,7 +139,6 @@ class ApiService {
       body: jsonEncode({
         'admin_user_id': adminUserId,
         'appointment_id': appointmentId,
-        'purpose': purpose,
         'status': status,
       }),
     );

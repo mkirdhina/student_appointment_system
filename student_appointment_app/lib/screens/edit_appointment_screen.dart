@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/api_service.dart';
+import '../theme/app_color.dart';
 
 class EditAppointmentScreen extends StatefulWidget {
   final Map<String, dynamic> user;
@@ -84,30 +85,25 @@ class _EditAppointmentScreenState extends State<EditAppointmentScreen> {
     final appointment = widget.appointment;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFBF9FF),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text(
           'Edit Appointment',
           style: TextStyle(
             fontWeight: FontWeight.w600,
-            color: Color(0xFF1F1F2E),
+            color: AppColors.textDark,
           ),
         ),
-        centerTitle: true,
-        backgroundColor: const Color(0xFFFBF9FF),
-        elevation: 0,
-        surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios_new_rounded,
-            color: Color(0xFF1F1F2E),
+            color: AppColors.textDark,
           ),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
       ),
-
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
@@ -115,11 +111,6 @@ class _EditAppointmentScreenState extends State<EditAppointmentScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Card(
-                elevation: 2,
-                color: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18),
-                ),
                 child: Padding(
                   padding: const EdgeInsets.all(18),
                   child: Column(
@@ -130,11 +121,10 @@ class _EditAppointmentScreenState extends State<EditAppointmentScreen> {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
+                          color: AppColors.textDark,
                         ),
                       ),
-
                       const SizedBox(height: 16),
-
                       detailRow(
                         Icons.person_outline_rounded,
                         'Lecturer',
@@ -164,7 +154,11 @@ class _EditAppointmentScreenState extends State<EditAppointmentScreen> {
 
               const Text(
                 'Update Purpose',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textDark,
+                ),
               ),
 
               const SizedBox(height: 10),
@@ -172,24 +166,8 @@ class _EditAppointmentScreenState extends State<EditAppointmentScreen> {
               TextField(
                 controller: purposeController,
                 maxLines: 5,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Enter new purpose',
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                    borderSide: const BorderSide(color: Color(0xFFE0E0E0)),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                    borderSide: const BorderSide(
-                      color: Color(0xFF2D1BFF),
-                      width: 1.6,
-                    ),
-                  ),
                 ),
               ),
 
@@ -200,14 +178,6 @@ class _EditAppointmentScreenState extends State<EditAppointmentScreen> {
                 height: 55,
                 child: ElevatedButton(
                   onPressed: isLoading ? null : updateAppointment,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF2D1BFF),
-                    foregroundColor: Colors.white,
-                    elevation: 2,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
                   child: isLoading
                       ? const SizedBox(
                           width: 22,
@@ -217,13 +187,7 @@ class _EditAppointmentScreenState extends State<EditAppointmentScreen> {
                             strokeWidth: 2.5,
                           ),
                         )
-                      : const Text(
-                          'Save Changes',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                      : const Text('Save Changes'),
                 ),
               ),
             ],
@@ -238,10 +202,13 @@ class _EditAppointmentScreenState extends State<EditAppointmentScreen> {
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
         children: [
-          Icon(icon, color: const Color(0xFF2D1BFF), size: 22),
+          Icon(icon, color: AppColors.primary, size: 22),
           const SizedBox(width: 12),
           Expanded(
-            child: Text('$label: $value', style: const TextStyle(fontSize: 15)),
+            child: Text(
+              '$label: $value',
+              style: const TextStyle(fontSize: 15, color: AppColors.textDark),
+            ),
           ),
         ],
       ),

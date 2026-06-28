@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../theme/app_color.dart';
 import 'available_slots_screen.dart';
 import 'login_screen.dart';
 import 'my_appointment_screen.dart';
@@ -15,20 +16,15 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFBF9FF),
-
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: Text(
           isAdmin ? 'Admin Dashboard' : 'Student Dashboard',
           style: const TextStyle(
             fontWeight: FontWeight.w600,
-            color: Color(0xFF1F1F2E),
+            color: AppColors.textDark,
           ),
         ),
-        centerTitle: true,
-        backgroundColor: const Color(0xFFFBF9FF),
-        elevation: 0,
-        surfaceTintColor: Colors.transparent,
         actions: [
           IconButton(
             tooltip: 'Logout',
@@ -38,7 +34,7 @@ class HomeScreen extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => const LoginScreen()),
               );
             },
-            icon: const Icon(Icons.logout_rounded, color: Color(0xFF1F1F2E)),
+            icon: const Icon(Icons.logout_rounded, color: AppColors.textDark),
           ),
         ],
       ),
@@ -50,22 +46,17 @@ class HomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Card(
-                elevation: 2,
-                color: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18),
-                ),
                 child: Padding(
                   padding: const EdgeInsets.all(8),
                   child: ListTile(
                     leading: CircleAvatar(
                       radius: 25,
-                      backgroundColor: const Color(0xFFEDEBFF),
+                      backgroundColor: AppColors.softPink,
                       child: Icon(
                         isAdmin
                             ? Icons.admin_panel_settings_outlined
                             : Icons.person_outline_rounded,
-                        color: const Color(0xFF2D1BFF),
+                        color: AppColors.primary,
                       ),
                     ),
                     title: Text(
@@ -73,11 +64,12 @@ class HomeScreen extends StatelessWidget {
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 17,
+                        color: AppColors.textDark,
                       ),
                     ),
                     subtitle: Text(
                       'Username: ${user['username']} • ${user['role']}',
-                      style: const TextStyle(color: Colors.grey),
+                      style: const TextStyle(color: AppColors.textGrey),
                     ),
                   ),
                 ),
@@ -90,10 +82,7 @@ class HomeScreen extends StatelessWidget {
                 height: 55,
                 child: ElevatedButton.icon(
                   icon: const Icon(Icons.calendar_month_rounded),
-                  label: const Text(
-                    'View Available Slots',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  ),
+                  label: const Text('View Available Slots'),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -102,14 +91,6 @@ class HomeScreen extends StatelessWidget {
                       ),
                     );
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF2D1BFF),
-                    foregroundColor: Colors.white,
-                    elevation: 2,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
                 ),
               ),
 
@@ -121,13 +102,7 @@ class HomeScreen extends StatelessWidget {
                   height: 55,
                   child: OutlinedButton.icon(
                     icon: const Icon(Icons.list_alt_rounded),
-                    label: const Text(
-                      'My Appointments',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                    label: const Text('My Appointments'),
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -137,16 +112,6 @@ class HomeScreen extends StatelessWidget {
                         ),
                       );
                     },
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: const Color(0xFF2D1BFF),
-                      side: const BorderSide(
-                        color: Color(0xFF2D1BFF),
-                        width: 1.3,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                    ),
                   ),
                 ),
 
@@ -156,13 +121,7 @@ class HomeScreen extends StatelessWidget {
                   height: 55,
                   child: ElevatedButton.icon(
                     icon: const Icon(Icons.add_rounded),
-                    label: const Text(
-                      'Add Consultation Slot',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                    label: const Text('Add Consultation Slot'),
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -172,12 +131,8 @@ class HomeScreen extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF1F1F2E),
+                      backgroundColor: AppColors.textDark,
                       foregroundColor: Colors.white,
-                      elevation: 2,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
                     ),
                   ),
                 ),
@@ -189,13 +144,7 @@ class HomeScreen extends StatelessWidget {
                   height: 55,
                   child: OutlinedButton.icon(
                     icon: const Icon(Icons.manage_accounts_outlined),
-                    label: const Text(
-                      'Manage Appointments',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                    label: const Text('Manage Appointments'),
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -205,16 +154,6 @@ class HomeScreen extends StatelessWidget {
                         ),
                       );
                     },
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: const Color(0xFF2D1BFF),
-                      side: const BorderSide(
-                        color: Color(0xFF2D1BFF),
-                        width: 1.3,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                    ),
                   ),
                 ),
               ],

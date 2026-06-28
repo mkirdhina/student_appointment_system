@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/api_service.dart';
+import '../theme/app_color.dart';
 
 class AdminEditAppointmentScreen extends StatefulWidget {
   final Map<String, dynamic> adminUser;
@@ -18,25 +19,16 @@ class AdminEditAppointmentScreen extends StatefulWidget {
 
 class _AdminEditAppointmentScreenState
     extends State<AdminEditAppointmentScreen> {
-  final purposeController = TextEditingController();
   String selectedStatus = 'Booked';
   bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    purposeController.text = widget.appointment['purpose'].toString();
     selectedStatus = widget.appointment['status'].toString();
   }
 
-  Future<void> updateAppointment() async {
-    final purpose = purposeController.text.trim();
-
-    if (purpose.isEmpty) {
-      showMessage('Please enter appointment purpose.');
-      return;
-    }
-
+  Future<void> updateAppointmentStatus() async {
     setState(() {
       isLoading = true;
     });
@@ -50,7 +42,6 @@ class _AdminEditAppointmentScreenState
       final result = await ApiService.adminUpdateAppointment(
         adminUserId,
         appointmentId,
-        purpose,
         selectedStatus,
       );
 
@@ -79,33 +70,23 @@ class _AdminEditAppointmentScreenState
   }
 
   @override
-  void dispose() {
-    purposeController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final appointment = widget.appointment;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFBF9FF),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text(
-          'Admin Edit Appointment',
+          'Update Appointment Status',
           style: TextStyle(
             fontWeight: FontWeight.w600,
-            color: Color(0xFF1F1F2E),
+            color: AppColors.textDark,
           ),
         ),
-        centerTitle: true,
-        backgroundColor: const Color(0xFFFBF9FF),
-        elevation: 0,
-        surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios_new_rounded,
-            color: Color(0xFF1F1F2E),
+            color: AppColors.textDark,
           ),
           onPressed: () {
             Navigator.pop(context);
@@ -120,11 +101,6 @@ class _AdminEditAppointmentScreenState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Card(
-                elevation: 2,
-                color: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18),
-                ),
                 child: Padding(
                   padding: const EdgeInsets.all(18),
                   child: Column(
@@ -135,6 +111,7 @@ class _AdminEditAppointmentScreenState
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
+                          color: AppColors.textDark,
                         ),
                       ),
 
@@ -170,6 +147,11 @@ class _AdminEditAppointmentScreenState
                         'Room',
                         appointment['room'].toString(),
                       ),
+                      detailRow(
+                        Icons.notes_rounded,
+                        'Purpose',
+                        appointment['purpose'].toString(),
+                      ),
                     ],
                   ),
                 ),
@@ -178,57 +160,20 @@ class _AdminEditAppointmentScreenState
               const SizedBox(height: 24),
 
               const Text(
-                'Update Purpose',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-
-              const SizedBox(height: 10),
-
-              TextField(
-                controller: purposeController,
-                maxLines: 5,
-                decoration: InputDecoration(
-                  hintText: 'Enter appointment purpose',
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                    borderSide: const BorderSide(color: Color(0xFFE0E0E0)),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                    borderSide: const BorderSide(
-                      color: Color(0xFF2D1BFF),
-                      width: 1.6,
-                    ),
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 20),
-
-              const Text(
                 'Appointment Status',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textDark,
+                ),
               ),
 
               const SizedBox(height: 10),
 
               DropdownButtonFormField<String>(
                 value: selectedStatus,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                    borderSide: const BorderSide(color: Color(0xFFE0E0E0)),
-                  ),
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.edit_calendar_rounded),
                 ),
                 items: const [
                   DropdownMenuItem(value: 'Booked', child: Text('Booked')),
@@ -252,15 +197,7 @@ class _AdminEditAppointmentScreenState
                 width: double.infinity,
                 height: 55,
                 child: ElevatedButton(
-                  onPressed: isLoading ? null : updateAppointment,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF2D1BFF),
-                    foregroundColor: Colors.white,
-                    elevation: 2,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
+                  onPressed: isLoading ? null : updateAppointmentStatus,
                   child: isLoading
                       ? const SizedBox(
                           width: 22,
@@ -270,13 +207,7 @@ class _AdminEditAppointmentScreenState
                             strokeWidth: 2.5,
                           ),
                         )
-                      : const Text(
-                          'Save Changes',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                      : const Text('Save Status'),
                 ),
               ),
             ],
@@ -291,10 +222,13 @@ class _AdminEditAppointmentScreenState
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
         children: [
-          Icon(icon, color: const Color(0xFF2D1BFF), size: 22),
+          Icon(icon, color: AppColors.primary, size: 22),
           const SizedBox(width: 12),
           Expanded(
-            child: Text('$label: $value', style: const TextStyle(fontSize: 15)),
+            child: Text(
+              '$label: $value',
+              style: const TextStyle(fontSize: 15, color: AppColors.textDark),
+            ),
           ),
         ],
       ),

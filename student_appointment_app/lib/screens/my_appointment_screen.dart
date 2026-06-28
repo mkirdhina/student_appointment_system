@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/api_service.dart';
+import '../theme/app_color.dart';
 import 'edit_appointment_screen.dart';
 
 class MyAppointmentsScreen extends StatefulWidget {
@@ -94,7 +95,7 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
                 Navigator.pop(dialogContext, true);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
+                backgroundColor: AppColors.danger,
                 foregroundColor: Colors.white,
               ),
               child: const Text('Yes, Cancel'),
@@ -136,45 +137,39 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
 
   Color statusColor(String status) {
     if (status == 'Booked') {
-      return const Color(0xFF2D1BFF);
+      return AppColors.primary;
     } else if (status == 'Cancelled') {
-      return Colors.red;
+      return AppColors.danger;
     } else {
-      return Colors.grey;
+      return AppColors.textGrey;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFBF9FF),
-
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text(
           'My Appointments',
           style: TextStyle(
             fontWeight: FontWeight.w600,
-            color: Color(0xFF1F1F2E),
+            color: AppColors.textDark,
           ),
         ),
-        centerTitle: true,
-        backgroundColor: const Color(0xFFFBF9FF),
-        elevation: 0,
-        surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios_new_rounded,
-            color: Color(0xFF1F1F2E),
+            color: AppColors.textDark,
           ),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
       ),
-
       body: isLoading
           ? const Center(
-              child: CircularProgressIndicator(color: Color(0xFF2D1BFF)),
+              child: CircularProgressIndicator(color: AppColors.primary),
             )
           : appointments.isEmpty
           ? Center(
@@ -185,12 +180,16 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
                       ? 'You do not have any appointments yet.'
                       : message,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 15, color: Colors.grey),
+                  style: const TextStyle(
+                    fontSize: 15,
+                    color: AppColors.textGrey,
+                  ),
                 ),
               ),
             )
           : RefreshIndicator(
               onRefresh: loadAppointments,
+              color: AppColors.primary,
               child: ListView.builder(
                 padding: const EdgeInsets.all(16),
                 itemCount: appointments.length,
@@ -203,11 +202,6 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
 
                   return Card(
                     margin: const EdgeInsets.only(bottom: 14),
-                    elevation: 2,
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
-                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(16),
                       child: Column(
@@ -217,10 +211,10 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
                             children: [
                               const CircleAvatar(
                                 radius: 24,
-                                backgroundColor: Color(0xFFEDEBFF),
+                                backgroundColor: AppColors.softPink,
                                 child: Icon(
                                   Icons.event_note_rounded,
-                                  color: Color(0xFF2D1BFF),
+                                  color: AppColors.primary,
                                 ),
                               ),
                               const SizedBox(width: 12),
@@ -230,6 +224,7 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 17,
+                                    color: AppColors.textDark,
                                   ),
                                 ),
                               ),
@@ -239,7 +234,9 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
                                   vertical: 5,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: statusColor(status).withOpacity(0.12),
+                                  color: statusColor(
+                                    status,
+                                  ).withValues(alpha: 0.12),
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 child: Text(
@@ -280,13 +277,6 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
                                 },
                                 icon: const Icon(Icons.edit_outlined),
                                 label: const Text('Edit Appointment'),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFF2D1BFF),
-                                  foregroundColor: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(14),
-                                  ),
-                                ),
                               ),
                             ),
 
@@ -301,10 +291,9 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
                                 icon: const Icon(Icons.cancel_outlined),
                                 label: const Text('Cancel Appointment'),
                                 style: OutlinedButton.styleFrom(
-                                  foregroundColor: Colors.red,
-                                  side: const BorderSide(color: Colors.red),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(14),
+                                  foregroundColor: AppColors.danger,
+                                  side: const BorderSide(
+                                    color: AppColors.danger,
                                   ),
                                 ),
                               ),
@@ -326,14 +315,14 @@ class _MyAppointmentsScreenState extends State<MyAppointmentsScreen> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, size: 19, color: const Color(0xFF2D1BFF)),
+          Icon(icon, size: 19, color: AppColors.primary),
           const SizedBox(width: 10),
           Expanded(
             child: Text(
               text,
               style: const TextStyle(
                 fontSize: 14.5,
-                color: Color(0xFF555555),
+                color: AppColors.textGrey,
                 height: 1.4,
               ),
             ),

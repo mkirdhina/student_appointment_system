@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/api_service.dart';
+import '../theme/app_color.dart';
 import 'book_appointment_screen.dart';
 
 class AvailableSlotsScreen extends StatefulWidget {
@@ -77,34 +78,28 @@ class _AvailableSlotsScreenState extends State<AvailableSlotsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFBF9FF),
-
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: Text(
           isAdmin ? 'All Available Slots' : 'Available Slots',
           style: const TextStyle(
             fontWeight: FontWeight.w600,
-            color: Color(0xFF1F1F2E),
+            color: AppColors.textDark,
           ),
         ),
-        centerTitle: true,
-        backgroundColor: const Color(0xFFFBF9FF),
-        elevation: 0,
-        surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios_new_rounded,
-            color: Color(0xFF1F1F2E),
+            color: AppColors.textDark,
           ),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
       ),
-
       body: isLoading
           ? const Center(
-              child: CircularProgressIndicator(color: Color(0xFF2D1BFF)),
+              child: CircularProgressIndicator(color: AppColors.primary),
             )
           : slots.isEmpty
           ? Center(
@@ -113,12 +108,16 @@ class _AvailableSlotsScreenState extends State<AvailableSlotsScreen> {
                 child: Text(
                   message.isEmpty ? 'No available slots found.' : message,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 15, color: Colors.grey),
+                  style: const TextStyle(
+                    fontSize: 15,
+                    color: AppColors.textGrey,
+                  ),
                 ),
               ),
             )
           : RefreshIndicator(
               onRefresh: loadSlots,
+              color: AppColors.primary,
               child: ListView.builder(
                 padding: const EdgeInsets.all(16),
                 itemCount: slots.length,
@@ -127,42 +126,35 @@ class _AvailableSlotsScreenState extends State<AvailableSlotsScreen> {
 
                   return Card(
                     margin: const EdgeInsets.only(bottom: 14),
-                    elevation: 2,
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
-                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(8),
                       child: ListTile(
                         leading: const CircleAvatar(
                           radius: 25,
-                          backgroundColor: Color(0xFFEDEBFF),
+                          backgroundColor: AppColors.softPink,
                           child: Icon(
                             Icons.calendar_month_rounded,
-                            color: Color(0xFF2D1BFF),
+                            color: AppColors.primary,
                           ),
                         ),
-
                         title: Text(
                           slot['lecturer_name'].toString(),
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
+                            color: AppColors.textDark,
                           ),
                         ),
-
                         subtitle: Padding(
                           padding: const EdgeInsets.only(top: 6),
                           child: Text(
                             '${slot['appointment_date']} at ${slot['appointment_time']}\nRoom: ${slot['room']}',
                             style: const TextStyle(
-                              color: Colors.grey,
+                              color: AppColors.textGrey,
                               height: 1.4,
                             ),
                           ),
                         ),
-
                         trailing: isAdmin
                             ? Container(
                                 padding: const EdgeInsets.symmetric(
@@ -170,13 +162,13 @@ class _AvailableSlotsScreenState extends State<AvailableSlotsScreen> {
                                   vertical: 6,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFFEDEBFF),
+                                  color: AppColors.softPink,
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 child: const Text(
                                   'Available',
                                   style: TextStyle(
-                                    color: Color(0xFF2D1BFF),
+                                    color: AppColors.primary,
                                     fontWeight: FontWeight.w600,
                                     fontSize: 12,
                                   ),
@@ -187,16 +179,9 @@ class _AvailableSlotsScreenState extends State<AvailableSlotsScreen> {
                                   goToBookingScreen(slot);
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFF2D1BFF),
-                                  foregroundColor: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
+                                  minimumSize: const Size(80, 42),
                                 ),
-                                child: const Text(
-                                  'Book',
-                                  style: TextStyle(fontWeight: FontWeight.w600),
-                                ),
+                                child: const Text('Book'),
                               ),
                       ),
                     ),

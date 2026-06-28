@@ -5,13 +5,12 @@ $data = json_decode(file_get_contents("php://input"), true);
 
 $admin_user_id = $data["admin_user_id"] ?? "";
 $appointment_id = $data["appointment_id"] ?? "";
-$purpose = trim($data["purpose"] ?? "");
 $status = trim($data["status"] ?? "");
 
-if (empty($admin_user_id) || empty($appointment_id) || empty($purpose) || empty($status)) {
+if (empty($admin_user_id) || empty($appointment_id) || empty($status)) {
     echo json_encode([
         "success" => false,
-        "message" => "Admin user ID, appointment ID, purpose, and status are required."
+        "message" => "Admin user ID, appointment ID, and status are required."
     ]);
     exit;
 }
@@ -29,7 +28,7 @@ if (!in_array($status, $allowedStatuses)) {
 try {
     $conn->beginTransaction();
 
-    // Check if the user is admin
+    // Check if user is admin
     $adminStmt = $conn->prepare("
         SELECT user_id, role
         FROM users
@@ -65,20 +64,16 @@ try {
         exit;
     }
 
-    // Update appointment
+    // Admin only updates status
     $updateStmt = $conn->prepare("
         UPDATE appointments
-        SET purpose = ?, status = ?
+        SET status = ?
         WHERE appointment_id = ?
     ");
-    $updateStmt->execute([$purpose, $status, $appointment_id]);
+    $updateStmt->execute([$status, $appointment_id]);
 
-    // Keep slot availability consistent with appointment status
-    if ($status === "Cancelled") {
-        $slotAvailable = 1;
-    } else {
-        $slotAvailable = 0;
-    }
+    // Update slot availability based on status
+    $slotAvailable = ($status === "Cancelled") ? 1 : 0;
 
     $slotStmt = $conn->prepare("
         UPDATE slots
@@ -91,7 +86,7 @@ try {
 
     echo json_encode([
         "success" => true,
-        "message" => "Appointment updated successfully by admin."
+        "message" => "Appointment status updated successfully."
     ]);
 
 } catch (PDOException $e) {
@@ -101,7 +96,7 @@ try {
 
     echo json_encode([
         "success" => false,
-        "message" => "Failed to update appointment.",
+        "message" => "Failed to update appointment status.",
         "error" => $e->getMessage()
     ]);
 }
