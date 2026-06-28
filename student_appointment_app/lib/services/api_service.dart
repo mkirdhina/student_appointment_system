@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  // Android Emulator uses 10.0.2.2 to access XAMPP localhost on your Mac
   static const String baseUrl = 'http://10.0.2.2/student_appointment_api/api';
 
   static Future<Map<String, dynamic>> register(
@@ -113,6 +112,36 @@ class ApiService {
         'appointment_date': appointmentDate,
         'appointment_time': appointmentTime,
         'room': room,
+      }),
+    );
+
+    return jsonDecode(response.body);
+  }
+
+  static Future<Map<String, dynamic>> getAllAppointments(
+    int adminUserId,
+  ) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/get_all_appointments.php?admin_user_id=$adminUserId'),
+    );
+
+    return jsonDecode(response.body);
+  }
+
+  static Future<Map<String, dynamic>> adminUpdateAppointment(
+    int adminUserId,
+    int appointmentId,
+    String purpose,
+    String status,
+  ) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/admin_update_appointment.php'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'admin_user_id': adminUserId,
+        'appointment_id': appointmentId,
+        'purpose': purpose,
+        'status': status,
       }),
     );
 

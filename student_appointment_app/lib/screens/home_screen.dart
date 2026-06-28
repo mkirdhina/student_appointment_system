@@ -3,6 +3,7 @@ import 'available_slots_screen.dart';
 import 'login_screen.dart';
 import 'my_appointment_screen.dart';
 import 'add_slot_screen.dart';
+import 'admin_manage_appointments_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   final Map<String, dynamic> user;
@@ -149,7 +150,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
 
-              if (isAdmin)
+              if (isAdmin) ...[
                 SizedBox(
                   width: double.infinity,
                   height: 55,
@@ -180,6 +181,43 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+
+                const SizedBox(height: 14),
+
+                SizedBox(
+                  width: double.infinity,
+                  height: 55,
+                  child: OutlinedButton.icon(
+                    icon: const Icon(Icons.manage_accounts_outlined),
+                    label: const Text(
+                      'Manage Appointments',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              AdminManageAppointmentsScreen(user: user),
+                        ),
+                      );
+                    },
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: const Color(0xFF2D1BFF),
+                      side: const BorderSide(
+                        color: Color(0xFF2D1BFF),
+                        width: 1.3,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ],
           ),
         ),
